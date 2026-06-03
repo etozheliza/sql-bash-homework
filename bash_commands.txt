@@ -1,0 +1,13 @@
+docker run --name sql-practice -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=shop -p 5432:5432 -d postgres
+
+Get-Content C:\Users\etozh\Downloads\shop.sql | docker exec -i sql-practice psql -U postgres -d shop
+
+docker exec -it sql-practice psql -U postgres -d shop
+
+docker exec -i sql-practice psql -U postgres -d shop -c "SELECT * FROM Orders;" > result.txt
+
+(Get-Content .\result.txt).Count
+
+docker exec -i sql-practice psql -U postgres -d shop -c "SELECT user_id, SUM(amount) AS total_amount FROM Orders GROUP BY user_id ORDER BY total_amount DESC LIMIT 5;" > top5.txt
+
+Select-String "3" .\top5.txt
